@@ -60,6 +60,7 @@ The technology stack may be refined during requirements analysis and system desi
 | Malith | DevOps |
 | Dilshan | Stakeholder |
 | Dilmith | Stakeholder |
+| Moshi | Stakeholder |
 
 ## 📂 Project Structure
 
