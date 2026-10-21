@@ -1,0 +1,34 @@
+/* My Registrations extras. Layout, sidebar, stats, tags, status labels and buttons come from dashboard.css. */
+.page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap; }
+.page-head h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+.page-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+
+.reg-content { display: flex; flex-direction: column; gap: 28px; }
+.section-count { font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
+.empty-note { padding: 20px; border: 1px dashed var(--border); border-radius: var(--radius); }
+
+.reg-cards { display: flex; flex-direction: column; gap: 12px; }
+.reg-card {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px 24px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.reg-main { display: flex; flex-direction: column; gap: 8px; flex: 1 1 320px; min-width: 0; }
+.reg-main h3 { font-size: 1.1rem; line-height: 1.3; }
+.reg-main .meta { flex-direction: row; flex-wrap: wrap; gap: 4px 20px; }
+.reg-title-link { color: inherit; text-decoration: none; }
+.reg-title-link:hover { text-decoration: underline; }
+.reg-side { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.reg-side .muted { font-size: 0.82rem; }
+
+.reg-card--past { border-style: dashed; }
+.reg-card--past h3 { color: var(--text-muted); }
+
+.skeleton--row { height: 110px; }
+.state-box h2 { font-size: 1.15rem; }
+
+@media (max-width: 767px) {
+  .page-head h1 { font-size: 1.6rem; }
+  .reg-card { padding: 16px; }
+  .reg-main .meta { flex-direction: column; }
+}

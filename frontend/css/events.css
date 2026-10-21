@@ -1,0 +1,38 @@
+/* Events page extras. Layout, sidebar, cards and buttons come from dashboard.css. */
+.page-head h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+
+.toolbar { display: flex; flex-direction: column; gap: 16px; }
+
+.field label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+
+.search-wrap { position: relative; max-width: 480px; }
+.search-wrap .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.search-wrap input {
+  width: 100%; min-height: 44px; padding: 10px 14px 10px 42px;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font: inherit;
+}
+.search-wrap input::placeholder { color: var(--text-muted); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 44px; padding: 8px 16px;
+  background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border); border-radius: 999px;
+  font: inherit; font-weight: 500; cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.chip:hover { background: var(--hover-bg); color: #fff; }
+.chip[aria-pressed="true"] { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; font-weight: 600; }
+
+.result-count { margin-top: -12px; min-height: 1.6em; font-size: 0.9rem; color: var(--text-muted); }
+
+@media (max-width: 767px) {
+  .page-head h1 { font-size: 1.6rem; }
+  .search-wrap { max-width: none; }
+  .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; } /* swipeable row, page itself never scrolls sideways */
+  .chip { flex-shrink: 0; }
+}
+
+.state-box h2 { font-size: 1.15rem; }
