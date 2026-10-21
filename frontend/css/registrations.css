@@ -1,34 +1,110 @@
-/* My Registrations extras. Layout, sidebar, stats, tags, status labels and buttons come from dashboard.css. */
-.page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap; }
-.page-head h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
-.page-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
-
-.reg-content { display: flex; flex-direction: column; gap: 28px; }
-.section-count { font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
-.empty-note { padding: 20px; border: 1px dashed var(--border); border-radius: var(--radius); }
-
-.reg-cards { display: flex; flex-direction: column; gap: 12px; }
-.reg-card {
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px 24px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px;
+/* Registration history stays list-like so date, event and status scan quickly. */
+.page-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
 }
-.reg-main { display: flex; flex-direction: column; gap: 8px; flex: 1 1 320px; min-width: 0; }
-.reg-main h3 { font-size: 1.1rem; line-height: 1.3; }
-.reg-main .meta { flex-direction: row; flex-wrap: wrap; gap: 4px 20px; }
-.reg-title-link { color: inherit; text-decoration: none; }
-.reg-title-link:hover { text-decoration: underline; }
-.reg-side { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-.reg-side .muted { font-size: 0.82rem; }
 
-.reg-card--past { border-style: dashed; }
-.reg-card--past h3 { color: var(--text-muted); }
+.reg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
 
-.skeleton--row { height: 110px; }
-.state-box h2 { font-size: 1.15rem; }
+.reg-content .block-head {
+  margin-bottom: 8px;
+}
+
+.section-count {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.empty-note {
+  padding: 14px 16px;
+  border-left: 3px solid #8da5b5;
+  background: var(--surface-muted);
+}
+
+.reg-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.reg-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  flex-wrap: wrap;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.reg-card:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.reg-main {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 320px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reg-main h3 {
+  font-size: 1.05rem;
+}
+
+.reg-main .meta {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px 18px;
+}
+
+.reg-title-link {
+  color: #213f56;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+}
+
+.reg-title-link:hover {
+  color: #18364e;
+  text-decoration-color: currentColor;
+}
+
+.reg-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.reg-side .muted {
+  font-size: 0.84rem;
+}
+
+.reg-card--past .reg-main h3 {
+  color: var(--muted);
+}
+
+.skeleton--row {
+  min-height: 94px;
+}
 
 @media (max-width: 767px) {
-  .page-head h1 { font-size: 1.6rem; }
-  .reg-card { padding: 16px; }
-  .reg-main .meta { flex-direction: column; }
+  .reg-card {
+    align-items: flex-start;
+    padding: 16px 2px;
+  }
+
+  .reg-main .meta {
+    flex-direction: column;
+    gap: 5px;
+  }
 }

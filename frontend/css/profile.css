@@ -1,59 +1,53 @@
 .profile-heading {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.profile-heading h1 {
-  font-size: 2rem;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
 }
 
 .eyebrow {
-  color: var(--accent-soft);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
+  color: #4b6b82;
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.025em;
 }
 
 .profile-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: clamp(20px, 4vw, 36px);
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
+  padding: clamp(18px, 3.5vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
 }
 
 .profile-overview {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .avatar {
-  width: 88px;
-  height: 88px;
   display: grid;
-  place-items: center;
+  width: 76px;
+  height: 76px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: #fff;
-  font-size: 1.8rem;
+  place-items: center;
+  border: 1px solid #c7d5df;
+  border-radius: 16px;
+  background: #e7eff4;
+  color: #244d6b;
+  font-size: 1.55rem;
   font-weight: 700;
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.28);
 }
 
 .profile-overview h2 {
-  font-size: 1.45rem;
-  line-height: 1.25;
   overflow-wrap: anywhere;
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
+.profile-overview .muted {
+  margin-top: 4px;
 }
 
 .profile-details {
@@ -61,83 +55,85 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 28px;
   margin: 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
 }
 
 .profile-details div {
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border);
   min-width: 0;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .profile-details dt,
 .form-field label {
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  font-weight: 600;
   margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .profile-details dd {
   margin: 0;
-  font-weight: 600;
+  font-weight: 650;
   overflow-wrap: anywhere;
 }
 
 .profile-form {
-  border-top: 1px solid var(--border);
-  padding-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
 }
 
 .profile-form[hidden] {
   display: none;
 }
 
+.form-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .profile-form h2,
 .account-note h2 {
-  font-size: 1.15rem;
+  font-size: 1.12rem;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 20px;
+  gap: 17px 20px;
+  margin-top: 18px;
 }
 
 .form-field {
   display: flex;
-  flex-direction: column;
   min-width: 0;
-}
-
-.form-field label {
-  color: var(--text-muted);
+  flex-direction: column;
 }
 
 .form-field input {
   width: 100%;
   min-height: 44px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  background: #060c19;
-  color: var(--text);
-  font: inherit;
+  padding: 9px 11px;
+  border: 1px solid #b9c7d0;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
 }
 
 .form-field input[readonly] {
-  color: var(--text-muted);
+  background: #f1f4f6;
+  color: var(--muted);
   cursor: not-allowed;
 }
 
 .form-field input:focus-visible {
-  border-color: var(--accent-soft);
+  border-color: var(--accent);
 }
 
 .form-status {
-  min-height: 1.5em;
-  margin-top: 16px;
+  margin-top: -4px;
   color: var(--success);
   font-size: 0.9rem;
 }
@@ -149,35 +145,41 @@
 .form-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 18px;
 }
 
 .account-note {
-  align-items: flex-start;
+  gap: 8px;
+  padding: 15px 0 0;
+  border-top: 1px solid var(--line);
 }
 
 @media (max-width: 767px) {
-  .profile-heading h1 {
-    font-size: 1.6rem;
+  .profile-heading {
+    align-items: flex-start;
   }
 
   .profile-heading > .btn {
     width: 100%;
   }
 
+  .profile-details,
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 359px) {
   .profile-overview {
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
   }
 
   .avatar {
-    width: 68px;
-    height: 68px;
-    font-size: 1.4rem;
-  }
-
-  .profile-details,
-  .form-grid {
-    grid-template-columns: 1fr;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    font-size: 1.25rem;
   }
 }
