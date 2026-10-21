@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Events | Student Profile</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M3 10h18M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></symbol>
+      <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a2 2 0 0 1 0-6V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /><path d="M14 5v14" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2 3" /></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+        <svg class="icon" aria-hidden="true"><use href="#i-menu" /></svg>
+      </button>
+      <span class="topbar-brand">CampusFlow</span>
+    </header>
+    <div class="backdrop" id="backdrop" hidden></div>
+
+    <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <p class="brand">CampusFlow</p>
+        <nav aria-label="Main menu">
+          <p class="nav-label">Main menu</p>
+          <ul>
+            <li><a href="dashboard.html"><svg class="icon" aria-hidden="true"><use href="#i-home" /></svg>Dashboard</a></li>
+            <li><a href="events.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar" /></svg>Events</a></li>
+            <li><a href="registrations.html"><svg class="icon" aria-hidden="true"><use href="#i-ticket" /></svg>My Registrations</a></li>
+            <li><a href="profile.html" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-user" /></svg>Profile</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="content" id="main" tabindex="-1">
+        <header class="profile-heading">
+          <div>
+            <p class="eyebrow">STUDENT ACCOUNT</p>
+            <h1 id="pageTitle">My Profile</h1>
+            <p class="muted">Your student information and contact details.</p>
+          </div>
+          <button class="btn btn-primary" id="editProfileButton" type="button" aria-controls="profileForm" aria-expanded="false">Edit profile</button>
+        </header>
+
+        <p class="mock-note" role="note">Demo profile: these details are placeholders. Edits are stored only in this browser and are not sent to a server.</p>
+
+        <section class="profile-card" aria-labelledby="profileName">
+          <div class="profile-overview">
+            <div class="avatar" id="studentAvatar" aria-hidden="true">AP</div>
+            <div>
+              <p class="eyebrow">STUDENT PROFILE · MOCK DATA</p>
+              <h2 id="profileName">Ayesha Perera</h2>
+              <p class="muted" id="profileId">Student ID: CF-2026-0142</p>
+            </div>
+          </div>
+
+          <dl class="profile-details">
+            <div><dt>Email address</dt><dd id="profileEmail">ayesha.perera@example.edu</dd></div>
+            <div><dt>Faculty</dt><dd id="profileFaculty">Faculty of Computing</dd></div>
+            <div><dt>Department</dt><dd id="profileDepartment">Information Technology</dd></div>
+            <div><dt>Contact number</dt><dd id="profilePhone">+94 77 123 4567</dd></div>
+          </dl>
+
+          <p class="form-status" id="profileStatus" role="status" aria-live="polite"></p>
+          <form class="profile-form" id="profileForm" hidden novalidate>
+            <div class="form-heading">
+              <div>
+                <h2>Edit student details</h2>
+                <p class="muted">Student ID is read-only in this demo.</p>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" autocomplete="name" required minlength="2" maxlength="80" />
+              </div>
+              <div class="form-field">
+                <label for="studentIdInput">Student ID</label>
+                <input id="studentIdInput" name="studentId" type="text" readonly />
+              </div>
+              <div class="form-field">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" autocomplete="email" required maxlength="120" />
+              </div>
+              <div class="form-field">
+                <label for="phone">Contact number</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" required pattern="[0-9+()\-\s]{7,20}" title="Use 7 to 20 digits, spaces, or + ( ) - characters." />
+              </div>
+              <div class="form-field">
+                <label for="faculty">Faculty</label>
+                <input id="faculty" name="faculty" type="text" required minlength="2" maxlength="80" />
+              </div>
+              <div class="form-field">
+                <label for="department">Department</label>
+                <input id="department" name="department" type="text" required minlength="2" maxlength="80" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Save demo profile</button>
+              <button class="btn btn-secondary" id="cancelEditButton" type="button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel account-note" aria-labelledby="accountNoteTitle">
+          <h2 id="accountNoteTitle">Account access</h2>
+          <p class="muted">Sign out is unavailable in this demo because authentication has not been connected.</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/nav.js"></script>
+    <script src="js/profile.js"></script>
+  </body>
+</html>
