@@ -66,11 +66,17 @@ async function send(path, payload, statusEl, btn, successMsg) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || "Something went wrong. Please try again.");
-      if (data.token) sessionStorage.setItem("campusflow_token", data.token);
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("The authentication service returned an invalid response.");
+      }
+      if (!res.ok) {
+        throw new Error(typeof data.message === "string" ? data.message : "Something went wrong. Please try again.");
+      }
     } else {
-      await new Promise(r => setTimeout(r, 600)); // demo delay
+      throw new Error("Authentication isn't connected yet. Please try again when the service is available.");
     }
     statusEl.classList.add("good");
     statusEl.textContent = successMsg;
@@ -92,8 +98,25 @@ $("#login-form").addEventListener("submit", e => {
     mark(f.password, f.password.value.length > 0)
   ].every(Boolean);
   if (!ok) return;
+
+  const status = $(".status", f);
+  const submitButton = $(".btn", f);
+  if (f.studentId.value.trim() === "Admin" && f.password.value === "123") {
+    status.className = "status good";
+    status.textContent = "Demo login successful. Opening the dashboard…";
+    submitButton.disabled = true;
+    setTimeout(() => location.href = DASHBOARD_URL, 700);
+    return;
+  }
+
+  if (!API_BASE) {
+    status.className = "status bad";
+    status.textContent = "Login is still in development. For the demo, use Admin / 123.";
+    return;
+  }
+
   send("/auth/login", { studentId: f.studentId.value.trim(), password: f.password.value, remember: f.remember.checked },
-    $(".status", f), $(".btn", f), "Signed in. Taking you to your dashboard…");
+    status, submitButton, "Signed in. Taking you to your dashboard…");
 });
 
 /* -REGISTER- */

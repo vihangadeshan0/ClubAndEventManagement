@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in | CampusFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <!-- BRAND -->
+      <aside class="brand">
+        <div class="logo">CampusFlow</div>
+
+        <div class="brand-main">
+          <h1>Clubs and events at KIC, all in one place.</h1>
+          <p class="lead">
+            Discover what's happening on campus, register in a click, and keep
+            track of everything you've signed up for.
+          </p>
+
+          <ul class="features">
+            <li>
+              <span class="ico"
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="5" width="18" height="16" rx="2" />
+                  <path d="M16 3v4M8 3v4M3 10h18" /></svg
+              ></span>
+              <div>
+                <b>Browse events</b
+                ><span>See upcoming activities across every club.</span>
+              </div>
+            </li>
+            <li>
+              <span class="ico"
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m8 12 3 3 5-6" /></svg
+              ></span>
+              <div>
+                <b>Register in one click</b
+                ><span> Sign up for events and get a confirmation.</span>
+              </div>
+            </li>
+            <li>
+              <span class="ico"
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"
+                  /></svg
+              ></span>
+              <div>
+                <b>Stay updated</b
+                ><span>Check deadlines and campus announcements.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="foot">KIC Campus</div>
+      </aside>
+
+      <!--FORM-->
+      <main class="auth">
+        <div class="box">
+          <div class="mobile-logo">CampusFlow</div>
+
+          <div class="card">
+            <div class="tabs" role="tablist" aria-label="Account">
+              <button
+                class="tab"
+                role="tab"
+                id="tab-login"
+                aria-selected="true"
+                aria-controls="login-form"
+              >
+                Sign in
+              </button>
+              <button
+                class="tab"
+                role="tab"
+                id="tab-register"
+                aria-selected="false"
+                aria-controls="register-form"
+              >
+                Register
+              </button>
+            </div>
+
+            <!--SIGN IN-->
+            <section id="login-section">
+              <div class="head">
+                <h2>Welcome back</h2>
+                <p>Sign in to see what's happening on campus.</p>
+              </div>
+
+              <form
+                id="login-form"
+                role="tabpanel"
+                aria-labelledby="tab-login"
+                novalidate
+              >
+                <div class="field">
+                  <label for="login-id">Student ID</label>
+                  <div class="input">
+                    <input
+                      id="login-id"
+                      name="studentId"
+                      type="text"
+                      autocomplete="username"
+                      placeholder="e.g. KIC2026001"
+                      required
+                    />
+                  </div>
+                  <div class="err">Enter your student ID.</div>
+                </div>
+                <div class="field">
+                  <label for="login-password">Password</label>
+                  <div class="input has-toggle">
+                    <input
+                      id="login-password"
+                      name="password"
+                      type="password"
+                      autocomplete="current-password"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      class="toggle"
+                      data-target="login-password"
+                      aria-label="Show password"
+                    >
+                      Show
+                    </button>
+                  </div>
+                  <div class="err">Enter your password.</div>
+                </div>
+                <div class="between">
+                  <label class="check"
+                    ><input type="checkbox" name="remember" /> Keep me signed
+                    in</label
+                  >
+                  <a href="#" id="forgot">Forgot password?</a>
+                </div>
+                <button class="btn" type="submit">Sign in</button>
+                <div class="status" role="status" aria-live="polite"></div>
+                <p class="switch">
+                  New to CampusFlow?
+                  <button type="button" data-go="register">
+                    Create an account
+                  </button>
+                </p>
+              </form>
+            </section>
+
+            <!--REGISTER-->
+            <section id="register-section" hidden>
+              <div class="head">
+                <h2>Create your account</h2>
+                <p>Join clubs and register for events in a few clicks.</p>
+              </div>
+
+              <form
+                id="register-form"
+                role="tabpanel"
+                aria-labelledby="tab-register"
+                novalidate
+              >
+                <div class="row">
+                  <div class="field">
+                    <label for="reg-name">Full name</label>
+                    <div class="input">
+                      <input
+                        id="reg-name"
+                        name="fullName"
+                        type="text"
+                        autocomplete="name"
+                        placeholder="Nimal Perera"
+                        required
+                      />
+                    </div>
+                    <div class="err">Enter your full name.</div>
+                  </div>
+                  <div class="field">
+                    <label for="reg-id">Student ID</label>
+                    <div class="input">
+                      <input
+                        id="reg-id"
+                        name="studentId"
+                        type="text"
+                        placeholder="e.g. KIC2026001"
+                        required
+                      />
+                    </div>
+                    <div class="err">Enter your student ID.</div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="reg-password">Password</label>
+                  <div class="input has-toggle">
+                    <input
+                      id="reg-password"
+                      name="password"
+                      type="password"
+                      autocomplete="new-password"
+                      placeholder="At least 8 characters"
+                      required
+                    />
+                    <button
+                      type="button"
+                      class="toggle"
+                      data-target="reg-password"
+                      aria-label="Show password"
+                    >
+                      Show
+                    </button>
+                  </div>
+                  <div class="meter" aria-hidden="true">
+                    <i></i><i></i><i></i><i></i>
+                  </div>
+                  <div class="meter-text" id="meter-text">
+                    Use 8+ characters with letters and numbers.
+                  </div>
+                  <div class="err">Password must be at least 8 characters.</div>
+                </div>
+                <div class="field">
+                  <label for="reg-confirm">Confirm password</label>
+                  <div class="input has-toggle">
+                    <input
+                      id="reg-confirm"
+                      name="confirm"
+                      type="password"
+                      autocomplete="new-password"
+                      placeholder="Re-enter your password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      class="toggle"
+                      data-target="reg-confirm"
+                      aria-label="Show password"
+                    >
+                      Show
+                    </button>
+                  </div>
+                  <div class="err">Passwords don't match.</div>
+                </div>
+                <button class="btn" type="submit">Create account</button>
+                <div class="status" role="status" aria-live="polite"></div>
+                <p class="switch">
+                  Already have an account?
+                  <button type="button" data-go="login">Sign in</button>
+                </p>
+              </form>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/login.js"></script>
+  </body>
+</html>

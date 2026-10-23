@@ -43,11 +43,11 @@
   place-items: center;
   flex: 0 0 auto;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  background: linear-gradient(135deg, #1f4e79, #52789b);
   color: #fff;
   font-size: 1.8rem;
   font-weight: 700;
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.28);
+  box-shadow: 0 8px 24px rgba(31, 78, 121, 0.18);
 }
 
 .profile-overview h2 {
@@ -121,7 +121,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
-  background: #060c19;
+  background: #fff;
   color: var(--text);
   font: inherit;
 }

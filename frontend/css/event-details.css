@@ -3,7 +3,7 @@
 /* This page is a child of Events, so the Events nav item is marked aria-current="true" */
 .sidebar a[aria-current="true"] {
   background: var(--accent-strong); color: #fff;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 16px rgba(21, 40, 63, 0.18);
 }
 
 .back-link { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
