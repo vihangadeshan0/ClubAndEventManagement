@@ -1,25 +1,23 @@
 (() => {
   'use strict';
 
-  const { $, esc, isUpcoming, formatDate, icon, toast, statusMarkup, loadEvents, loadRegistrations, saveRegistrations, CATEGORY_LABELS, STORAGE_KEY } = window.CampusFlow;
+  const { $, esc, isUpcoming, formatDate, icon, toast, statusMarkup, loadEvents, loadRegistrations, registerForEvent, CATEGORY_LABELS } = window.CampusFlow;
 
   const root = $('detailContent');
   const eventId = (new URLSearchParams(window.location.search).get('id') || '').trim();
 
   let events = [];
-  let registrations = loadRegistrations();
+  let registrations = {};
   let current = null;
   let loaded = false;
 
-  /* ---------- Registration panel (mock: saved locally, starts as pending) ---------- */
+  /* ---------- Registration panel ---------- */
   function registrationMarkup() {
     const state = registrations[current.id];
     const ended = !isUpcoming(current);
 
     if (state) {
-      const note = state === 'confirmed'
-        ? 'Marked as confirmed in this sample data.'
-        : 'Saved as pending in this browser. Mock data only, nothing was sent to a backend.';
+      const note = 'Your seat is reserved.';
       return `
         <div class="reg-state" id="regState" tabindex="-1">${statusMarkup(state)}</div>
         <p class="muted">${note}${ended ? ' This event has ended.' : ''}</p>`;
@@ -27,9 +25,10 @@
     if (ended) {
       return '<p class="muted" id="regState">Registration is closed because this event has ended.</p>';
     }
+    if (Number(current.availableSeats) < 1) return '<p class="muted" id="regState">This event is full.</p>';
     return `
       <button class="btn btn-primary" type="button" id="registerBtn">Register for this event</button>
-      <p class="muted">Registering saves your spot only in this browser. Nothing is sent to a server.</p>`;
+      <p class="muted">Your seat is reserved when the server confirms your registration.</p>`;
   }
 
   /* ---------- Page states ---------- */
@@ -47,6 +46,8 @@
             <div><dt>${icon('calendar')}Date</dt><dd>${formatDate(current.date)}</dd></div>
             <div><dt>${icon('clock')}Time</dt><dd>${esc(current.time)}</dd></div>
             <div><dt>${icon('pin')}Venue</dt><dd>${esc(current.venue)}</dd></div>
+            <div><dt>Capacity</dt><dd>${Number(current.capacity)} seats</dd></div>
+            <div><dt>Available</dt><dd>${Number(current.availableSeats)} seats</dd></div>
           </dl>
           <h2>About this event</h2>
           <p class="detail-desc">${esc(current.description)}</p>
@@ -98,8 +99,9 @@
     loaded = false;
     showLoading();
     try {
-      events = await loadEvents();
-      registrations = loadRegistrations();
+      const [eventRows, registrationRows] = await Promise.all([loadEvents(), loadRegistrations()]);
+      events = eventRows;
+      registrations = registrationRows;
       loaded = true;
       render();
     } catch {
@@ -108,28 +110,29 @@
   }
 
   /* ---------- Interactions ---------- */
-  root.addEventListener('click', (ev) => {
+  root.addEventListener('click', async (ev) => {
     if (ev.target.closest('#retryBtn')) { init(); return; }
     if (!ev.target.closest('#registerBtn') || !current) return;
 
     if (registrations[current.id]) return; // prevent duplicate registrations
     if (!isUpcoming(current)) return;      // past events are closed
 
-    // Mock only: saved in this browser, not sent anywhere
-    registrations[current.id] = 'pending';
-    saveRegistrations(registrations);
+    const button = ev.target.closest('#registerBtn');
+    if (button) button.disabled = true;
+    try {
+      await registerForEvent(current.id);
+      registrations[current.id] = 'confirmed';
+    } catch (error) {
+      toast(error.message);
+      if (button) button.disabled = false;
+      return;
+    }
     $('regBody').innerHTML = registrationMarkup();
-    toast(`${current.title}: saved locally as pending. Mock data only, nothing was sent to a backend.`);
+    toast(`${current.title}: registration confirmed.`);
     const status = $('regState');
     if (status) status.focus(); // the button was replaced, so keep keyboard focus in the panel
   });
 
   // Keep the status in sync if registrations change in another tab on this device
-  window.addEventListener('storage', (ev) => {
-    if (ev.key !== null && ev.key !== STORAGE_KEY) return;
-    registrations = loadRegistrations();
-    if (loaded && current && $('regBody')) $('regBody').innerHTML = registrationMarkup();
-  });
-
   init();
 })();

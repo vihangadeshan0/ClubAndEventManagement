@@ -1,136 +1,37 @@
 (() => {
   'use strict';
-
-  const { $, esc, isUpcoming, formatDate, icon, statusMarkup, loadEvents, loadRegistrations, STORAGE_KEY, CATEGORY_LABELS } = window.CampusFlow;
-
+  const { $, esc, formatDate, icon, apiFetch, toast, CATEGORY_LABELS } = window.CampusFlow;
   const content = $('regContent');
-  const statsEl = $('stats');
-
-  let events = [];
-  let registrations = loadRegistrations();
-  let loaded = false;
-
-  const plural = (n) => `${n} ${n === 1 ? 'event' : 'events'}`;
-
-  /* ---------- Rendering ---------- */
-  function regCard(e, past) {
-    return `
-      <li class="reg-card${past ? ' reg-card--past' : ''}">
-        <div class="reg-main">
-          <span class="tag">${esc(CATEGORY_LABELS[e.category] || e.category)}</span>
-          <h3><a class="reg-title-link" href="event-details.html?id=${encodeURIComponent(e.id)}">${esc(e.title)}</a></h3>
-          <ul class="meta">
-            <li>${icon('calendar')}<span>${formatDate(e.date)}</span></li>
-            <li>${icon('clock')}<span>${esc(e.time)}</span></li>
-            <li>${icon('pin')}<span>${esc(e.venue)}</span></li>
-          </ul>
-        </div>
-        <div class="reg-side">
-          ${statusMarkup(registrations[e.id])}
-          ${past ? '<span class="muted">This event has ended</span>' : ''}
-        </div>
-      </li>`;
-  }
-
-  function section(id, title, items, past, emptyHtml) {
-    return `
-      <section class="block" aria-labelledby="${id}">
-        <div class="block-head">
-          <h2 id="${id}">${title}</h2>
-          <span class="section-count">${plural(items.length)}</span>
-        </div>
-        ${items.length
-          ? `<ul class="reg-cards">${items.map((e) => regCard(e, past)).join('')}</ul>`
-          : `<p class="muted empty-note">${emptyHtml}</p>`}
-      </section>`;
-  }
-
-  function renderStats(mine, upcoming) {
-    const confirmed = mine.filter((e) => registrations[e.id] === 'confirmed').length;
-    const pending = mine.length - confirmed;
+  const stats = $('stats');
+  const stamp = (value) => value ? new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : 'Unavailable';
+  function render(rows) {
+    content.setAttribute('aria-busy', 'false');
+    const active = rows.filter((r) => r.status === 'active');
     const cards = [
-      ['Total', mine.length, 'Registered Events', "Events you've signed up for"],
-      ['Coming up', upcoming.length, 'Upcoming', 'Still to attend'],
-      ['Confirmed', confirmed, 'Confirmed', 'Registration confirmed'],
-      ['Waiting', pending, 'Pending', 'Awaiting confirmation'],
+      ['Total', rows.length, 'Registration history'], ['Active', active.length, 'Current reservations'],
+      ['Cancelled', rows.filter((r) => r.status === 'cancelled').length, 'Cancelled registrations'],
     ];
-    statsEl.innerHTML = cards.map(([label, value, name, desc]) => `
-      <article class="stat">
-        <p class="stat-label">${esc(label)}</p>
-        <p class="stat-value">${String(value).padStart(2, '0')}</p>
-        <p class="stat-name">${esc(name)}</p>
-        <p class="stat-desc">${esc(desc)}</p>
-      </article>`).join('');
+    stats.innerHTML = cards.map(([label, value, name]) => `<article class="stat"><p class="stat-label">${label}</p><p class="stat-value">${String(value).padStart(2, '0')}</p><p class="stat-name">${name}</p></article>`).join('');
+    if (!rows.length) { content.innerHTML = '<div class="state-box"><h2>No registrations yet</h2><p class="muted">When you register for an event, it will show here.</p><a class="btn btn-primary" href="events.html">Browse events</a></div>'; return; }
+    content.innerHTML = `<section class="block"><div class="block-head"><h2>Registration history</h2><span class="section-count">${rows.length} ${rows.length === 1 ? 'event' : 'events'}</span></div><ul class="reg-cards">${rows.map((r) => {
+      const e = r.event;
+      const status = r.status === 'active' ? '<span class="portal-badge approved">Active</span>' : `<span class="portal-badge ${r.status === 'cancelled' ? 'rejected' : ''}">${esc(r.status)}</span>`;
+      const canCancel = r.status === 'active' && e && e.startsAt && new Date(e.startsAt) > new Date();
+      return `<li class="reg-card"><div class="reg-main">${e ? `<span class="tag">${esc(CATEGORY_LABELS[e.category] || e.category)}</span><h3><a class="reg-title-link" href="event-details.html?id=${encodeURIComponent(r.eventId)}">${esc(e.title)}</a></h3><ul class="meta"><li>${icon('calendar')}<span>${formatDate(e.date)}</span></li><li>${icon('clock')}<span>${esc(e.time)}</span></li><li>${icon('pin')}<span>${esc(e.venue)}</span></li></ul>` : '<h3>Event details unavailable</h3>'}<p class="muted">Registered: ${stamp(r.registeredAt)}</p></div><div class="reg-side">${status}${canCancel ? `<button class="btn btn-secondary" type="button" data-cancel="${Number(r.id)}">Cancel registration</button>` : ''}</div></li>`;
+    }).join('')}</ul></section>`;
   }
-
-  function render() {
-    if (!loaded) return;
-    content.setAttribute('aria-busy', 'false');
-
-    // Only registrations that match a known event are shown (stale ids are ignored)
-    const mine = events.filter((e) => registrations[e.id]);
-    const upcoming = mine.filter(isUpcoming).sort((a, b) => a.date.localeCompare(b.date));
-    const past = mine.filter((e) => !isUpcoming(e)).sort((a, b) => b.date.localeCompare(a.date));
-    renderStats(mine, upcoming);
-
-    if (!mine.length) {
-      content.innerHTML = `
-        <div class="state-box">
-          <h2>No registrations yet</h2>
-          <p class="muted">When you register for an event, it will show up here.</p>
-          <a class="btn btn-primary" href="events.html">Browse events</a>
-        </div>`;
-      return;
-    }
-
-    content.innerHTML =
-      section('upcomingTitle', 'Upcoming registrations', upcoming, false,
-        'No upcoming registrations. <a class="text-link" href="events.html">Browse events</a> to sign up for something new.') +
-      section('pastTitle', 'Past registrations', past, true,
-        'Registrations move here after the event date.');
-  }
-
-  function showLoading() {
+  async function load() {
     content.setAttribute('aria-busy', 'true');
-    statsEl.innerHTML = '<div class="skeleton skeleton--stat"></div>'.repeat(4);
     content.innerHTML = '<div class="skeleton skeleton--row"></div><div class="skeleton skeleton--row"></div>';
+    try { const { registrations } = await apiFetch('/registrations?history=1'); render(registrations); }
+    catch (error) { content.setAttribute('aria-busy', 'false'); stats.innerHTML = ''; content.innerHTML = `<div class="state-box" role="alert"><h2>Could not load registrations</h2><p class="muted">${esc(error.message)}</p><button class="btn btn-primary" id="retryBtn" type="button">Try again</button></div>`; }
   }
-
-  function showError() {
-    content.setAttribute('aria-busy', 'false');
-    statsEl.innerHTML = '';
-    content.innerHTML = `
-      <div class="state-box" role="alert">
-        <h2>Couldn't load your registrations</h2>
-        <p class="muted">Check your connection and try again.</p>
-        <button class="btn btn-primary" type="button" id="retryBtn">Try again</button>
-      </div>`;
-  }
-
-  async function init() {
-    loaded = false;
-    showLoading();
-    try {
-      events = await loadEvents();
-      registrations = loadRegistrations();
-      loaded = true;
-      render();
-    } catch {
-      showError();
-    }
-  }
-
-  /* ---------- Interactions ---------- */
-  content.addEventListener('click', (ev) => {
-    if (ev.target.closest('#retryBtn')) init();
+  content.addEventListener('click', async (event) => {
+    if (event.target.closest('#retryBtn')) return load();
+    const button = event.target.closest('[data-cancel]'); if (!button) return;
+    button.disabled = true;
+    try { await apiFetch(`/registrations/${encodeURIComponent(button.dataset.cancel)}`, { method: 'DELETE' }); toast('Registration cancelled.'); await load(); }
+    catch (error) { toast(error.message); button.disabled = false; }
   });
-
-  // Keep this page in sync if registrations change in another tab on this device
-  window.addEventListener('storage', (ev) => {
-    if (ev.key !== null && ev.key !== STORAGE_KEY) return;
-    registrations = loadRegistrations();
-    render();
-  });
-
-  init();
+  load();
 })();

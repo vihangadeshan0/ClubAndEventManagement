@@ -1,0 +1,59 @@
+:root { --admin-ink:#17283a; --admin-panel:#fff; --admin-line:#d6dee6; --admin-accent:#1f4e79; --admin-muted:#5a6b7c; }
+.admin-page { background:#edf1f4; color:var(--admin-ink); }
+.admin-page .topbar { background:#15283f; border-bottom:1px solid #243b55; }
+.admin-page .sidebar { background:#15283f; border-right:1px solid #243b55; color:#fff; }
+.admin-page .brand { color:#fff; font-weight:750; letter-spacing:.02em; }
+.admin-page .brand small { display:block; margin-top:5px; color:#b7c4d1; font-size:.62rem; letter-spacing:.16em; }
+.admin-page .nav-label,.eyebrow { color:#52789b; font-size:.66rem; font-weight:800; letter-spacing:.16em; }
+.admin-page .sidebar .nav-label { color:#aebdcb; }
+.admin-page .sidebar nav a { display:flex; align-items:center; gap:12px; color:#c2cbd4; border-radius:9px; padding:12px 13px; }
+.admin-page .sidebar nav a[aria-current="page"] { color:#fff; background:#1f4e79; box-shadow:inset 3px 0 #d9a441; }
+.admin-page .sidebar nav a b { margin-left:auto; background:#d9a441; color:#15283f; border-radius:20px; padding:2px 7px; font-size:.72rem; }
+.admin-page .admin-sidebar-bottom { position:absolute; bottom:22px; left:22px; right:18px; display:grid; gap:14px; color:#d5dde5; font-size:.82rem; }
+.admin-page .admin-sidebar-bottom a { color:#e4bb63; }
+.admin-content { gap:22px; max-width:1500px; }
+.admin-hero { min-height:190px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; margin:-36px -36px 0; padding:36px; background:linear-gradient(120deg,#15283f,#1f4e79); color:#fff; }
+.admin-hero .eyebrow { color:#e4bb63; }
+.admin-hero h1 { margin:14px 0 7px; font-size:clamp(1.8rem,3vw,2.6rem); letter-spacing:-.045em; }
+.admin-hero p:not(.eyebrow) { margin:0; color:#d9e2eb; }
+.hero-date { font-size:.83rem; font-weight:700; white-space:nowrap; }
+.admin-status { margin:0; color:#8a5a00; }.admin-status:empty { display:none; }.admin-status.error,.form-error { color:#b42318; }
+.admin-section { display:grid; gap:18px; }.admin-section[hidden] { display:none; }
+.metric-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; }
+.metric-card { min-height:136px; display:grid; align-content:space-between; padding:18px 20px; border:1px solid var(--admin-line); border-radius:12px; background:#fff; }
+.metric-card span { color:#5a6b7c; font-size:.67rem; font-weight:800; letter-spacing:.11em; }.metric-card strong { font-size:2rem; letter-spacing:-.04em; }.metric-card small { color:#8493a2; }
+.metric-1 { border-top:2px solid #d9a441; }.metric-2 { border-top:2px solid #52789b; }.metric-3 { border-top:2px solid #397c9e; }
+.admin-panel { overflow:hidden; border:1px solid var(--admin-line); border-radius:13px; background:var(--admin-panel); }
+.panel-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:21px 22px; border-bottom:1px solid var(--admin-line); }
+.panel-heading .eyebrow { margin:0 0 7px; }.panel-heading h2 { margin:0; font-size:1.17rem; }
+.quiet-button,.primary-button,.table-action,.icon-button { border:1px solid #d6dee6; border-radius:8px; background:#fff; color:#1f4e79; padding:9px 12px; cursor:pointer; font:inherit; font-size:.82rem; }
+.primary-button { border-color:#1f4e79; background:#1f4e79; color:#fff; font-weight:750; }
+.quiet-button:hover,.table-action:hover { border-color:#52789b; background:#e4ebf1; color:#15283f; }.primary-button:hover { background:#173f63; }
+.toolbar { display:flex; gap:10px; padding:14px 20px; border-bottom:1px solid var(--admin-line); }
+.toolbar input,.toolbar select,.editor-fields input,.editor-fields textarea { min-width:0; border:1px solid #c5d0db; border-radius:8px; background:#fff; color:#17283a; padding:10px 12px; font:inherit; }
+.toolbar input { flex:1; }.toolbar select { min-width:160px; }.table-scroll { overflow:auto; }
+.admin-page table { width:100%; border-collapse:collapse; text-align:left; font-size:.84rem; }
+.admin-page th,.admin-page td { padding:14px 18px; border-bottom:1px solid #e3e8ed; vertical-align:middle; }
+.admin-page th { color:#5a6b7c; font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; font-weight:800; }
+.admin-page td { color:#35495d; }.admin-page td b { color:#17283a; }.admin-page td small { display:block; margin-top:4px; color:#6c7c8b; }
+.empty-cell { padding:26px !important; color:#5a6b7c !important; text-align:center; }
+.pill { display:inline-flex; border-radius:24px; padding:5px 9px; font-size:.7rem; font-weight:750; }.pill.good { color:#1e6b3a; background:#e5f2e9; }.pill.pending { color:#8a5a00; background:#fff4d8; }
+.row-actions { display:flex; flex-wrap:wrap; gap:6px; }.table-action { padding:6px 8px; font-size:.73rem; }.accent-action { color:#1f4e79; }.danger-action { color:#b42318; }
+.overview-clubs { padding:0 22px; }.overview-clubs>div { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--admin-line); }.overview-clubs small { margin-left:auto; color:#5a6b7c; }
+.club-mark { display:grid; place-items:center; width:32px; height:32px; border-radius:9px; background:#e4ebf1; color:#1f4e79; font-weight:800; }
+.announcement-list { display:grid; gap:10px; padding:14px; }.announcement-card { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:17px; border:1px solid var(--admin-line); border-radius:10px; background:#f8fafb; }.announcement-card .eyebrow { margin:0 0 7px; }.announcement-card h3 { margin:0 0 6px; }.announcement-card p:last-child { margin:0; color:#5a6b7c; }
+#editor { width:min(550px,calc(100% - 28px)); max-height:90vh; overflow:auto; border:1px solid #d6dee6; border-radius:15px; padding:0; background:#fff; color:#17283a; box-shadow:0 24px 90px #15283f55; }#editor::backdrop { background:#15283f99; backdrop-filter:blur(3px); }
+#clubManager { width:min(760px,calc(100% - 28px)); max-height:min(88vh,900px); overflow:auto; border:1px solid var(--border); border-radius:16px; padding:0; background:var(--surface); color:var(--text); box-shadow:0 24px 90px #17161466; }
+#clubManager::backdrop { background:#17161499; backdrop-filter:blur(3px); }
+.club-manager-content { display:grid; gap:18px; padding:22px; }
+.club-manager-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding-bottom:15px; border-bottom:1px solid var(--border); }
+.club-manager-heading h2 { margin:0; font-size:1.45rem; }.club-manager-heading .eyebrow,.club-notice-form .eyebrow { margin:0 0 6px; }.club-manager-heading .muted { margin:7px 0 0; }
+.club-manager-members,.club-notice-form { overflow:hidden; border:1px solid var(--border); border-radius:12px; background:var(--surface); }
+.club-manager-members .panel-heading { padding:15px 18px; }.club-manager-members .panel-heading h3,.club-notice-form h3 { margin:0; font-size:1rem; }.club-manager-members .panel-heading h3 span { display:inline-grid; min-width:25px; height:25px; margin-left:5px; place-items:center; border-radius:50%; background:var(--surface-soft); font-size:.78rem; }
+#clubManagerMembers { padding:12px 18px; }.club-manager-members .empty-cell { margin:0; }
+.club-member-list { display:grid; }.club-member-row { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:12px 0; border-bottom:1px solid var(--border); }.club-member-row:last-child { border-bottom:0; }.club-member-row>div { display:grid; gap:4px; }.club-member-row small { color:var(--text-muted); }
+.club-notice-form { display:grid; gap:12px; padding:18px; }.club-notice-form h3 { margin-bottom:5px; }.club-notice-form p { margin:0; }.club-notice-form label { display:grid; gap:6px; color:var(--text); font-size:.84rem; font-weight:650; }.club-notice-form input,.club-notice-form textarea { width:100%; border:1px solid var(--border-strong); border-radius:8px; background:var(--surface-soft); color:var(--text); padding:10px 12px; font:inherit; }.club-notice-form textarea { min-height:100px; resize:vertical; }.club-notice-form .dialog-actions { padding-top:5px; }
+#editor form { padding:22px; }.dialog-head,.dialog-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; }.dialog-head { padding-bottom:16px; border-bottom:1px solid var(--admin-line); }.dialog-head h2 { margin:0; }.dialog-head .eyebrow { margin:0 0 5px; }.icon-button { font-size:1.25rem; }.editor-fields { display:grid; grid-template-columns:1fr 1fr; gap:13px; padding:18px 0; }.editor-fields label { display:grid; gap:7px; color:#35495d; font-size:.8rem; }.editor-fields label:has(textarea),.editor-fields label:has([name="description"]) { grid-column:1/-1; }.editor-fields textarea { min-height:95px; resize:vertical; }.form-error { min-height:1.3em; margin:0 0 12px; }.dialog-actions { justify-content:flex-end; padding-top:14px; border-top:1px solid var(--admin-line); }
+@media(max-width:760px) { .admin-hero { margin:-24px -16px 0; padding:24px 18px; min-height:165px; }.hero-date { display:none; }.metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.toolbar { flex-wrap:wrap; }.toolbar select { flex:1; }.announcement-card { align-items:flex-start; flex-direction:column; }.overview-clubs small { text-align:right; }.admin-sidebar-bottom { display:none; } }
+@media(max-width:420px) { .metric-card { min-height:112px; padding:13px; }.metric-card strong { font-size:1.6rem; }.editor-fields { grid-template-columns:1fr; }.editor-fields label { grid-column:1/-1; } }
+@media(max-width:520px) { .club-manager-content { padding:16px; }.club-member-row { align-items:flex-start; flex-direction:column; }.club-member-row button { width:100%; } }

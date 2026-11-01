@@ -6,6 +6,7 @@
     <title>Campus Events | Dashboard</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <!-- Icon sprite -->
@@ -175,45 +176,41 @@
           <a class="btn btn-primary" href="events.html">Explore Events</a>
         </section>
 
-        <p class="mock-note" role="note">
-          Sample data: numbers and events below are placeholders until the
-          backend is connected.
-        </p>
-
         <!-- Stats -->
-        <section class="stats" aria-label="Your summary" id="stats"></section>
-
-        <!-- Upcoming events -->
-        <section class="block" aria-labelledby="eventsTitle">
-          <div class="block-head">
-            <h2 id="eventsTitle">Upcoming events</h2>
-            <a class="text-link" href="events.html">See all events</a>
-          </div>
-          <div class="event-grid" id="eventGrid" aria-busy="true"></div>
+        <section aria-labelledby="summaryTitle">
+          <h2 id="summaryTitle" class="dashboard-summary-title">Dashboard Summary</h2>
+          <div class="stats" aria-label="Your summary" id="stats"></div>
         </section>
 
-        <!-- Lower panels -->
-        <div class="panels">
+        <section class="block" aria-labelledby="featuredTitle">
+          <div class="block-head"><h2 id="featuredTitle">Featured Events</h2><a class="text-link" href="events.html">Browse all events</a></div>
+          <div id="featuredEvents" class="featured-events" aria-label="Featured upcoming events" aria-busy="true"></div>
+        </section>
+
+        <!-- Available events -->
+        <section class="block" aria-labelledby="eventsTitle">
+          <div class="block-head">
+            <h2 id="eventsTitle">Available Events</h2>
+            <span id="eventCount" class="muted" aria-live="polite"></span>
+          </div>
+          <div class="dashboard-events-wrap" id="eventGrid" aria-busy="true">
+            <table class="dashboard-events"><thead><tr><th>Event Name</th><th>Date / Time</th><th>Venue</th><th>Spots Left</th><th>Action</th></tr></thead><tbody id="eventRows"><tr><td colspan="5">Loading events…</td></tr></tbody></table>
+          </div>
+        </section>
+
+        <!-- Real student activity and campus updates -->
+        <div class="dashboard-bottom">
           <section class="panel" aria-labelledby="regTitle">
-            <h2 id="regTitle">My recent registrations</h2>
+            <h2 id="regTitle">My Registrations</h2>
             <ul class="reg-list" id="regList"></ul>
             <a class="text-link" href="registrations.html"
               >View all registrations</a
             >
           </section>
 
-          <section class="panel" aria-labelledby="annTitle">
-            <h2 id="annTitle">Campus announcements</h2>
-            <ul class="ann-list">
-              <li>
-                <h3>Registration reminder</h3>
-                <p class="muted">Check event deadlines before registering.</p>
-              </li>
-              <li>
-                <h3>Event updates</h3>
-                <p class="muted">Review venue and schedule changes.</p>
-              </li>
-            </ul>
+          <section class="panel" aria-labelledby="updatesTitle">
+            <div class="portal-actions"><h2 id="updatesTitle">Campus updates</h2><span id="notificationSummary" class="muted">Loading unread count…</span></div>
+            <ul class="ann-list dashboard-updates" id="updatesList"><li class="muted">Loading announcements and notifications…</li></ul>
           </section>
         </div>
       </main>
