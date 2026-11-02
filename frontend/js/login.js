@@ -1,4 +1,3 @@
-const API_BASE = "";
 const DASHBOARD_URL = "dashboard.html";
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -60,27 +59,20 @@ async function send(path, payload, statusEl, btn, successMsg) {
   const label = btn.textContent;
   btn.textContent = "Please wait…";
   try {
-    if (API_BASE) {
-      const res = await fetch(API_BASE + path, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      let data;
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("The authentication service returned an invalid response.");
-      }
-      if (!res.ok) {
-        throw new Error(typeof data.message === "string" ? data.message : "Something went wrong. Please try again.");
-      }
-    } else {
-      throw new Error("Authentication isn't connected yet. Please try again when the service is available.");
+    const data = await window.CampusFlow.apiFetch(path, { method: "POST", body: JSON.stringify(payload) });
+     if (path === "/auth/register") {
+      statusEl.classList.add("good");
+      statusEl.textContent = "Account request submitted. An administrator must verify your student status before you can sign in.";
+      document.getElementById("reg-password").value = "";
+      document.getElementById("reg-confirm").value = "";
+      btn.disabled = false;
+      btn.textContent = label;
+      return;
     }
     statusEl.classList.add("good");
     statusEl.textContent = successMsg;
-    setTimeout(() => location.href = DASHBOARD_URL, 700);
+    const nextPage = path === "/auth/login" && data.user?.role !== "student" ? "admin.html" : DASHBOARD_URL;
+    setTimeout(() => location.href = nextPage, 700);
   } catch (err) {
     statusEl.classList.add("bad");
     statusEl.textContent = err.message || "Couldn't reach the server. Check your connection.";
@@ -101,21 +93,7 @@ $("#login-form").addEventListener("submit", e => {
 
   const status = $(".status", f);
   const submitButton = $(".btn", f);
-  if (f.studentId.value.trim() === "Admin" && f.password.value === "123") {
-    status.className = "status good";
-    status.textContent = "Demo login successful. Opening the dashboard…";
-    submitButton.disabled = true;
-    setTimeout(() => location.href = DASHBOARD_URL, 700);
-    return;
-  }
-
-  if (!API_BASE) {
-    status.className = "status bad";
-    status.textContent = "Login is still in development. For the demo, use Admin / 123.";
-    return;
-  }
-
-  send("/auth/login", { studentId: f.studentId.value.trim(), password: f.password.value, remember: f.remember.checked },
+  send("/auth/login", { studentId: f.studentId.value.trim(), password: f.password.value },
     status, submitButton, "Signed in. Taking you to your dashboard…");
 });
 
@@ -141,5 +119,5 @@ $("#forgot").addEventListener("click", e => {
   e.preventDefault();
   const s = $(".status", $("#login-form"));
   s.className = "status";
-  s.textContent = "Password reset isn't available yet. Please contact the club admin.";
+  s.textContent = "Password recovery is unavailable because no secure email reset service is configured. Contact an administrator.";
 });

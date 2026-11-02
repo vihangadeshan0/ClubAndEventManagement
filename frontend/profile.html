@@ -7,6 +7,8 @@
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/profile.css" />
+    <link rel="stylesheet" href="css/student-portal.css" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -45,78 +47,45 @@
           <div>
             <p class="eyebrow">STUDENT ACCOUNT</p>
             <h1 id="pageTitle">My Profile</h1>
-            <p class="muted">Your student information and contact details.</p>
+            <p class="muted">Your account information.</p>
           </div>
-          <button class="btn btn-primary" id="editProfileButton" type="button" aria-controls="profileForm" aria-expanded="false">Edit profile</button>
         </header>
-
-        <p class="mock-note" role="note">Demo profile: these details are placeholders. Edits are stored only in this browser and are not sent to a server.</p>
 
         <section class="profile-card" aria-labelledby="profileName">
           <div class="profile-overview">
-            <div class="avatar" id="studentAvatar" aria-hidden="true">AP</div>
+            <div class="avatar" id="studentAvatar" aria-hidden="true">ST</div>
             <div>
-              <p class="eyebrow">STUDENT PROFILE · MOCK DATA</p>
-              <h2 id="profileName">Ayesha Perera</h2>
-              <p class="muted" id="profileId">Student ID: CF-2026-0142</p>
+              <p class="eyebrow">SIGNED-IN ACCOUNT</p>
+              <h2 id="profileName">Loading account…</h2>
+              <p class="muted" id="profileId"></p>
             </div>
           </div>
 
           <dl class="profile-details">
-            <div><dt>Email address</dt><dd id="profileEmail">ayesha.perera@example.edu</dd></div>
-            <div><dt>Faculty</dt><dd id="profileFaculty">Faculty of Computing</dd></div>
-            <div><dt>Department</dt><dd id="profileDepartment">Information Technology</dd></div>
-            <div><dt>Contact number</dt><dd id="profilePhone">+94 77 123 4567</dd></div>
+            <div><dt>Account type</dt><dd id="profileRole">Loading…</dd></div>
           </dl>
 
           <p class="form-status" id="profileStatus" role="status" aria-live="polite"></p>
-          <form class="profile-form" id="profileForm" hidden novalidate>
-            <div class="form-heading">
-              <div>
-                <h2>Edit student details</h2>
-                <p class="muted">Student ID is read-only in this demo.</p>
-              </div>
-            </div>
-            <div class="form-grid">
-              <div class="form-field">
-                <label for="fullName">Full name</label>
-                <input id="fullName" name="fullName" type="text" autocomplete="name" required minlength="2" maxlength="80" />
-              </div>
-              <div class="form-field">
-                <label for="studentIdInput">Student ID</label>
-                <input id="studentIdInput" name="studentId" type="text" readonly />
-              </div>
-              <div class="form-field">
-                <label for="email">Email address</label>
-                <input id="email" name="email" type="email" autocomplete="email" required maxlength="120" />
-              </div>
-              <div class="form-field">
-                <label for="phone">Contact number</label>
-                <input id="phone" name="phone" type="tel" autocomplete="tel" required pattern="[0-9+()\-\s]{7,20}" title="Use 7 to 20 digits, spaces, or + ( ) - characters." />
-              </div>
-              <div class="form-field">
-                <label for="faculty">Faculty</label>
-                <input id="faculty" name="faculty" type="text" required minlength="2" maxlength="80" />
-              </div>
-              <div class="form-field">
-                <label for="department">Department</label>
-                <input id="department" name="department" type="text" required minlength="2" maxlength="80" />
-              </div>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-primary" type="submit">Save demo profile</button>
-              <button class="btn btn-secondary" id="cancelEditButton" type="button">Cancel</button>
-            </div>
-          </form>
         </section>
 
         <section class="panel account-note" aria-labelledby="accountNoteTitle">
           <h2 id="accountNoteTitle">Account access</h2>
-          <p class="muted">Sign out is unavailable in this demo because authentication has not been connected.</p>
+          <p class="muted">Use Sign out in the sidebar to end your CampusFlow session.</p>
+        </section>
+        <section class="panel account-note" aria-labelledby="editProfileTitle">
+          <h2 id="editProfileTitle">Edit profile</h2>
+          <form id="profileForm" class="portal-form"><label for="editFullName">Full name</label><input id="editFullName" name="fullName" required minlength="2" maxlength="120"><button class="btn btn-primary" type="submit">Save profile</button></form>
+          <p class="form-status" id="editProfileStatus" role="status" aria-live="polite"></p>
+        </section>
+        <section class="panel account-note" aria-labelledby="passwordTitle">
+          <h2 id="passwordTitle">Change password</h2>
+          <form id="passwordForm" class="portal-form"><label for="currentPassword">Current password</label><input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required><label for="newPassword">New password</label><input id="newPassword" name="newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="256" required><button class="btn btn-primary" type="submit">Change password</button></form>
+          <p class="form-status" id="passwordStatus" role="status" aria-live="polite"></p>
         </section>
       </main>
     </div>
 
+    <script src="js/common.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/profile.js"></script>
   </body>

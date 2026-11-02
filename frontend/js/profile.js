@@ -1,96 +1,66 @@
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'campusflow.mock.profile';
-  const DEFAULT_PROFILE = {
-    fullName: 'Ayesha Perera',
-    studentId: 'CF-2026-0142',
-    email: 'ayesha.perera@example.edu',
-    faculty: 'Faculty of Computing',
-    department: 'Information Technology',
-    phone: '+94 77 123 4567',
-  };
-
-  const form = document.getElementById('profileForm');
-  const editButton = document.getElementById('editProfileButton');
-  const cancelButton = document.getElementById('cancelEditButton');
+  const nameElement = document.getElementById('profileName');
+  const idElement = document.getElementById('profileId');
+  const avatar = document.getElementById('studentAvatar');
   const status = document.getElementById('profileStatus');
-  let profile = loadProfile();
-
-  function loadProfile() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
-        return { ...DEFAULT_PROFILE, ...saved, studentId: DEFAULT_PROFILE.studentId };
-      }
-    } catch {
-      // Fall back to the clearly marked sample profile when storage is unavailable or invalid.
-    }
-    return { ...DEFAULT_PROFILE };
-  }
+  const nameInput = document.getElementById('editFullName');
+  const profileStatus = document.getElementById('editProfileStatus');
+  const passwordStatus = document.getElementById('passwordStatus');
+  let user = null;
 
   function initials(name) {
-    return name.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0].toUpperCase()).join('');
+    return name.trim().split(/\s+/).filter(Boolean).slice(0, 2)
+      .map((part) => part[0].toUpperCase()).join('');
   }
 
-  function render() {
-    document.getElementById('profileName').textContent = profile.fullName;
-    document.getElementById('studentAvatar').textContent = initials(profile.fullName) || 'ST';
-    document.getElementById('profileId').textContent = `Student ID: ${profile.studentId}`;
-    document.getElementById('profileEmail').textContent = profile.email;
-    document.getElementById('profileFaculty').textContent = profile.faculty;
-    document.getElementById('profileDepartment').textContent = profile.department;
-    document.getElementById('profilePhone').textContent = profile.phone;
-  }
-
-  function fillForm() {
-    form.elements.fullName.value = profile.fullName;
-    form.elements.studentId.value = profile.studentId;
-    form.elements.email.value = profile.email;
-    form.elements.phone.value = profile.phone;
-    form.elements.faculty.value = profile.faculty;
-    form.elements.department.value = profile.department;
-  }
-
-  function closeForm() {
-    form.hidden = true;
-    editButton.setAttribute('aria-expanded', 'false');
-    editButton.focus();
-  }
-
-  editButton.addEventListener('click', () => {
-    fillForm();
-    status.textContent = '';
-    form.hidden = false;
-    editButton.setAttribute('aria-expanded', 'true');
-    form.elements.fullName.focus();
-  });
-
-  cancelButton.addEventListener('click', closeForm);
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    status.textContent = '';
-    if (!form.reportValidity()) return;
-
-    profile = {
-      fullName: form.elements.fullName.value.trim(),
-      studentId: DEFAULT_PROFILE.studentId,
-      email: form.elements.email.value.trim(),
-      phone: form.elements.phone.value.trim(),
-      faculty: form.elements.faculty.value.trim(),
-      department: form.elements.department.value.trim(),
-    };
-
+  async function loadProfile() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-      status.textContent = 'Demo profile updated in this browser only. It was not sent to a server.';
-    } catch {
-      status.textContent = 'Demo profile updated for this page only; browser storage is unavailable.';
+      ({ user } = await window.CampusFlow.apiFetch('/auth/me'));
+      nameElement.textContent = user.fullName;
+      idElement.textContent = `Student ID: ${user.campusId}`;
+      document.getElementById('profileRole').textContent = user.role.replaceAll('_', ' ');
+      avatar.textContent = initials(user.fullName) || 'ST';
+      if (nameInput) nameInput.value = user.fullName;
+      status.textContent = '';
+    } catch (error) {
+      status.textContent = error.message || 'Could not load your account details. Refresh the page to try again.';
+      status.classList.add('error');
     }
-    render();
-    closeForm();
+  }
+
+  document.getElementById('profileForm')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = event.currentTarget.querySelector('button[type="submit"]');
+    button.disabled = true;
+    profileStatus.textContent = '';
+    try {
+      const result = await window.CampusFlow.apiFetch('/auth/profile', {
+        method: 'PATCH', body: JSON.stringify({ fullName: nameInput.value.trim() }),
+      });
+      user = result.user;
+      nameElement.textContent = user.fullName;
+      avatar.textContent = initials(user.fullName) || 'ST';
+      profileStatus.textContent = 'Profile updated.';
+    } catch (error) { profileStatus.textContent = error.message; profileStatus.classList.add('error'); }
+    finally { button.disabled = false; }
   });
 
-  render();
+  document.getElementById('passwordForm')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    passwordStatus.textContent = '';
+    try {
+      const data = Object.fromEntries(new FormData(form));
+      const result = await window.CampusFlow.apiFetch('/auth/password', { method: 'POST', body: JSON.stringify(data) });
+      passwordStatus.textContent = result.message || 'Password changed successfully.';
+      form.reset();
+    } catch (error) { passwordStatus.textContent = error.message; passwordStatus.classList.add('error'); }
+    finally { button.disabled = false; }
+  });
+
+  loadProfile();
 })();

@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const { $, isUpcoming, eventCard, toast, loadEvents, loadRegistrations, saveRegistrations, CATEGORY_LABELS, STORAGE_KEY } = window.CampusFlow;
+  const { $, isUpcoming, eventCard, toast, loadEvents, loadRegistrations, registerForEvent, CATEGORY_LABELS, STORAGE_KEY } = window.CampusFlow;
 
   const grid = $('eventGrid');
   const search = $('eventSearch');
@@ -9,7 +9,7 @@
   const chips = [...document.querySelectorAll('.chip')];
 
   let events = [];
-  let registrations = loadRegistrations();
+  let registrations = {};
   let loaded = false;
   const state = { q: '', category: 'all' };
 
@@ -28,8 +28,6 @@
     const next = new URLSearchParams();
     if (state.category !== 'all') next.set('category', state.category);
     if (state.q.trim()) next.set('q', state.q.trim());
-    const mock = params.get('mock');
-    if (mock) next.set('mock', mock);
     const qs = next.toString();
     try {
       window.history.replaceState(null, '', window.location.pathname + (qs ? `?${qs}` : ''));
@@ -100,7 +98,9 @@
     loaded = false;
     showLoading();
     try {
-      events = await loadEvents();
+      const [eventRows, registrationRows] = await Promise.all([loadEvents(), loadRegistrations()]);
+      events = eventRows;
+      registrations = registrationRows;
       loaded = true;
       render();
     } catch {
@@ -124,7 +124,7 @@
     updateUrl();
   });
 
-  grid.addEventListener('click', (ev) => {
+  grid.addEventListener('click', async (ev) => {
     if (ev.target.closest('#retryBtn')) { init(); return; }
 
     if (ev.target.closest('#clearFilters')) {
@@ -144,24 +144,24 @@
     const id = btn.dataset.register;
     if (registrations[id]) return; // prevent duplicate registrations
 
-    // Mock only: saved in this browser, not sent anywhere
-    registrations[id] = 'pending';
-    saveRegistrations(registrations);
+    btn.disabled = true;
+    try {
+      await registerForEvent(id);
+      registrations[id] = 'confirmed';
+    } catch (error) {
+      toast(error.message);
+      btn.disabled = false;
+      return;
+    }
     render();
     const e = events.find((x) => x.id === id);
-    toast(`${e ? e.title : 'Event'}: saved locally as pending. Mock data only, nothing was sent to a backend.`);
+    toast(`${e ? e.title : 'Event'}: registration confirmed.`);
     // Re-rendering removed the clicked button, so move focus to the same card's link
     const link = grid.querySelector(`.event-link[href$="id=${encodeURIComponent(id)}"]`);
     if (link) link.focus();
   });
 
   // Keep this page in sync if registrations change in another tab (e.g. the dashboard)
-  window.addEventListener('storage', (ev) => {
-    if (ev.key !== null && ev.key !== STORAGE_KEY) return;
-    registrations = loadRegistrations();
-    render();
-  });
-
   syncChips();
   init();
 })();
