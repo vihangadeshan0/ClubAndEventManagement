@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard | CampusFlow</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">☰</button><span class="topbar-brand">CampusFlow</span></header>
+  <div class="backdrop" id="backdrop" hidden></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <p class="brand">CampusFlow <small>ADMIN CONSOLE</small></p>
+      <nav aria-label="Administrator menu"><p class="nav-label">WORKSPACE</p><ul id="adminNav">
+        <li><a href="#overview" data-section="overview" aria-current="page">◫ <span>Overview</span></a></li>
+        <li data-role="students"><a href="#students" data-section="students">♙ <span>Students</span><b id="pendingBadge"></b></a></li>
+        <li data-role="events"><a href="#events" data-section="events">▦ <span>Events</span></a></li>
+        <li data-role="clubs"><a href="#clubs" data-section="clubs">♧ <span>Clubs</span></a></li>
+        <li data-role="clubs"><a href="#memberships" data-section="memberships">♧ <span>Membership Requests</span></a></li>
+        <li data-role="announcements"><a href="#announcements" data-section="announcements">▤ <span>Announcements</span></a></li>
+        <li><a href="#notifications" data-section="notifications">◉ <span>Notifications</span><b id="adminUnreadBadge" hidden></b></a></li>
+      </ul></nav>
+      <div class="admin-sidebar-bottom"><span id="adminIdentity">Administrator</span></div>
+    </aside>
+    <main class="content admin-content" id="main" tabindex="-1">
+      <section class="admin-hero"><div><p class="eyebrow">CAMPUSFLOW / ADMINISTRATION</p><h1 id="sectionTitle">Today’s Overview</h1><p id="sectionSubtitle">A live view of campus activity and operations.</p></div><div class="hero-date" id="todayLabel"></div></section>
+      <p class="admin-status" id="adminStatus" role="status" aria-live="polite"></p>
+      <section class="admin-section" id="section-overview"><div class="metric-grid" id="metrics" aria-busy="true"></div><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">CAMPUS PULSE</p><h2>Upcoming events</h2></div><button class="quiet-button" data-go="events">Manage events →</button></div><div id="overviewEvents"></div></div></section>
+      <section class="admin-section" id="section-students" hidden><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">PEOPLE</p><h2>Student management</h2></div></div><div class="toolbar"><input id="studentSearch" type="search" placeholder="Search name or campus ID" /><select id="studentFilter" aria-label="Filter students"><option value="all">All students</option><option value="pending">Pending approval</option><option value="approved">Approved</option><option value="declined">Declined</option></select></div><div class="table-scroll"><table><thead><tr><th>Student</th><th>Campus ID</th><th>Approval</th><th>Account</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="studentsRows"></tbody></table></div></div></section>
+      <section class="admin-section" id="section-events" hidden><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">PROGRAMMING</p><h2>Event management</h2></div><button class="primary-button" id="newEvent">＋ Create event</button></div><div class="toolbar"><input id="eventSearch" type="search" placeholder="Search events" /><select id="eventFilter" aria-label="Filter events"><option value="all">All events</option><option value="published">Published</option><option value="draft">Drafts</option></select></div><div class="table-scroll"><table><thead><tr><th>Event</th><th>Date</th><th>Capacity</th><th>Registered</th><th>Status</th><th>Actions</th></tr></thead><tbody id="eventsRows"></tbody></table></div></div></section>
+      <section class="admin-section" id="section-clubs" hidden><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">COMMUNITY</p><h2>Club management</h2></div><button class="primary-button" id="newClub">＋ Create club</button></div><div class="toolbar"><button class="quiet-button" data-go="memberships">Review membership requests</button></div><div class="table-scroll"><table><thead><tr><th>Club</th><th>Description</th><th>Members</th><th>Pending</th><th>Actions</th></tr></thead><tbody id="clubsRows"></tbody></table></div></div></section>
+      <section class="admin-section" id="section-memberships" hidden><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">COMMUNITY</p><h2>Membership requests</h2></div></div><div class="table-scroll"><table><thead><tr><th>Student</th><th>Campus ID</th><th>Club</th><th>Requested</th><th>Decision</th></tr></thead><tbody id="membershipRows"></tbody></table></div></div></section>
+      <section class="admin-section" id="section-announcements" hidden><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">CAMPUS UPDATES</p><h2>Announcements</h2></div><button class="primary-button" id="newAnnouncement">＋ New announcement</button></div><div id="announcementRows" class="announcement-list"></div></div></section>
+      <section class="admin-section" id="section-notifications" hidden><div class="admin-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h2>Administrator notifications</h2></div><button id="markAdminAllRead" class="quiet-button" type="button" hidden>Mark all as read</button></div><div id="notificationRows" class="announcement-list"></div></div></section>
+    </main>
+  </div>
+  <dialog id="clubManager" aria-labelledby="clubManagerTitle">
+    <div class="club-manager-content">
+      <header class="club-manager-heading"><div><p class="eyebrow">CLUB WORKSPACE</p><h2 id="clubManagerTitle">Manage club</h2><p id="clubManagerDescription" class="muted"></p></div><button class="icon-button" type="button" data-close-club-manager aria-label="Close club manager">×</button></header>
+      <p id="clubManagerStatus" class="admin-status" role="status" aria-live="polite"></p>
+      <section class="club-manager-members"><div class="panel-heading"><div><p class="eyebrow">MEMBERSHIP</p><h3>Approved members <span id="clubManagerMemberCount">0</span></h3></div></div><div id="clubManagerMembers" aria-busy="true"></div></section>
+      <form id="clubNoticeForm" class="club-notice-form"><div><p class="eyebrow">CLUB UPDATE</p><h3>Send a notification</h3><p class="muted">This saves a club announcement and notifies its approved members.</p></div><label>Title<input name="title" maxlength="160" required /></label><label>Message<textarea name="body" maxlength="500" required></textarea></label><div class="dialog-actions"><button class="primary-button" type="submit" id="clubNoticeSubmit">Send update</button></div></form>
+    </div>
+  </dialog>
+  <dialog id="editor"><form method="dialog" id="editorForm"><div class="dialog-head"><div><p class="eyebrow" id="editorEyebrow">NEW RECORD</p><h2 id="editorTitle">Create</h2></div><button class="icon-button" value="cancel" aria-label="Close">×</button></div><div id="editorFields" class="editor-fields"></div><p class="form-error" id="editorError"></p><div class="dialog-actions"><button class="quiet-button" value="cancel">Cancel</button><button class="primary-button" id="saveRecord" value="default">Save</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/common.js"></script><script src="js/nav.js"></script><script src="js/admin.js"></script>
+</body>
+</html>
