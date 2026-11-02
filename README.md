@@ -92,6 +92,7 @@ The frontend communicates with the Flask backend through REST-style JSON API end
 | Malith | DevOps |
 | Dilshan | Stakeholder |
 | Dilmith | Stakeholder |
+| Yoosuf | System Architecture |
 | Moshi | Stakeholder |
 
 ## 📂 Project Structure
